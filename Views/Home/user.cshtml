@@ -1,0 +1,28 @@
+﻿@page
+@model LibraryManagementSystem.Views.userModel
+@{
+}
+
+@* this page has authorized access see User.cshtml.cs (right click anywhere->view code)*@
+
+
+<h2 class="text-center">Welcome to your account</h2>
+
+<div>
+    First Name: @Model.appUser?.FirstName
+</div>
+<div>
+    Last Name: @Model.appUser?.LastName
+</div>
+<div>
+    Email: @Model.appUser?.Email
+</div>
+<div>
+    Phone: @Model.appUser?.PhoneNumber
+</div>
+<div>
+    Address: @Model.appUser?.Address
+</div>
+<div>
+    Created At: @Model.appUser?.CreatedAt.ToString("MM/dd/yyyy")
+</div>
