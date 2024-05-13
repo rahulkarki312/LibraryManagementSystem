@@ -1,0 +1,62 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+
+@model LibraryManagementSystem.Models.BurrowRecordViewModel
+
+
+
+
+
+@if (Model is null)
+{
+    <p>Error</p>
+}
+
+else
+{
+    <h1>Burrow @Model.BookTitle Book</h1>
+
+
+
+    <form method="post" >
+
+     
+
+        <div class="mt-3">
+            <label class="form-label">Book Name</label>
+            <input type="text" class="form-control" readonly asp-for="BookTitle" />
+        </div>
+
+        <div class="mt-3">
+            <input type="checkbox" class="form-check-input" id="IsAvailable" asp-for="IsAvailable" disabled />
+            <label class="form-check-label" for="IsAvailable">Available</label>
+        </div>
+
+
+        <div class="mt-3">
+            <label class="form-label">StudentId</label>
+            <input type="text" class="form-control" asp-for="StudentId" />
+        </div>
+
+        <div class="mt-3">
+            <label for="datepicker">Select Burrow Date:</label>
+            <input asp-for="BurrowDate" type="date" class="form-control" id="datepicker" />
+        </div>
+
+        <div class="mt-3">
+        <label for="datepicker">Select Return Date:</label>
+        <input asp-for="ReturnDate" type="date" class="form-control" id="datepicker" />
+        </div>
+
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">Burrow</button>
+        </div>
+
+
+    </form>
+}

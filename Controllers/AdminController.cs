@@ -51,7 +51,6 @@ namespace LibraryManagementSystem.Controllers
         }
 
         [HttpGet]
-
         public async Task<IActionResult> List()
         {
             var books = await dbContext.Books.ToListAsync();
@@ -96,5 +95,70 @@ namespace LibraryManagementSystem.Controllers
             return RedirectToAction("List", "Admin");
         }
 
+       
+
+        [HttpGet]
+        public async Task<IActionResult> ListBurrowRecords()
+        {
+            // Retrieve all burrow records
+            var allBurrowRecords = await dbContext.BurrowRecords.ToListAsync();
+
+            // Join BurrowRecords with Books to get book information
+            var recordsWithBookInfo = allBurrowRecords
+                .Join(
+                    dbContext.Books,
+                    br => Guid.Parse(br.BookId),
+                    b => b.Id,
+                    (br, b) => new
+                    {
+                        br.Id,
+                        br.BookId,
+                        br.StudentId,
+                        br.BurrowDate,
+                        br.ReturnDate,
+                        br.IsFined,
+                        BookTitle = b.Title,
+                        BookAuthor = b.Author,
+                        b.IsAvailable
+                    }
+                )
+                // Join with AspNetUsers to get user information
+                .Join(
+                    dbContext.AspNetUsers,
+                    record => record.StudentId,
+                    user => user.UserName,
+                    (record, user) => new BurrowRecordViewModel
+                    {
+                        Id = record.Id,
+                        BookId = record.BookId,
+                        StudentId = record.StudentId,
+                        BurrowDate = record.BurrowDate,
+                        ReturnDate = record.ReturnDate,
+                        IsFined = record.IsFined,
+                        BookTitle = record.BookTitle,
+                        BookAuthor = record.BookAuthor,
+                        IsAvailable = record.IsAvailable,
+                        StudentName = $"{user.FirstName} {user.LastName}" // Combine FirstName and LastName into UserName
+                    }
+                )
+                .ToList();
+
+            return View(recordsWithBookInfo);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> FineStudent(Guid burrowRecordId)
+        {
+            var burrowRecord = await dbContext.BurrowRecords.FindAsync(burrowRecordId);
+            if (burrowRecord != null)
+            {
+                burrowRecord.IsFined = true;
+
+                await dbContext.SaveChangesAsync();
+
+            }
+            return RedirectToAction("ListBurrowRecords", "Admin");
+        }
     }
 }

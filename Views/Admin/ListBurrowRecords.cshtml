@@ -1,0 +1,108 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+
+@model List<LibraryManagementSystem.Models.BurrowRecordViewModel>
+
+@{
+    // Filter overdue records
+    var overdueRecords = Model.Where(burrowRecord => DateTime.Today > burrowRecord.ReturnDate).ToList();
+
+    // Filter not overdue records
+    var notOverdueRecords = Model.Where(burrowRecord => DateTime.Today <= burrowRecord.ReturnDate).ToList();
+}
+
+<h2>Overdue Records</h2>
+
+<div class="smallSpace"></div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Book Title</th>
+            <th>Borrowed By</th>
+            <th>Borrowed Date</th>
+            <th>Return Date</th>
+            <th>Is Fined</th>
+            <th>Action</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var burrowRecord in overdueRecords)
+        {
+            <tr>
+                <td>@burrowRecord.BookTitle</td>
+                <td>@burrowRecord.StudentName</td>
+                <td>@burrowRecord.BurrowDate.ToString("MM/dd/yyyy")</td>
+                <td>@burrowRecord.ReturnDate.ToString("MM/dd/yyyy")</td>
+                <td>@burrowRecord.IsFined</td>
+                <td>
+                    @{using (Html.BeginForm("FineStudent", "Admin", FormMethod.Post))
+                    {
+                    <input type="hidden" name="burrowRecordId" value="@burrowRecord.Id" />
+                    <button class="btn btn-primary" type="submit">Fine Student</button>
+                    }}
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="space"></div>
+
+<h2>Not Overdue Records</h2>
+
+<div class="smallSpace"></div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Book Title</th>
+            <th>Borrowed By</th>
+            <th>Borrowed Date</th>
+            <th>Return Date</th>
+            <th>Is Fined</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var burrowRecord in notOverdueRecords)
+        {
+            <tr>
+                <td>@burrowRecord.BookTitle</td>
+                <td>@burrowRecord.StudentName</td>
+                <td>@burrowRecord.BurrowDate.ToString("MM/dd/yyyy")</td>
+                <td>@burrowRecord.ReturnDate.ToString("MM/dd/yyyy")</td>
+                <td>@burrowRecord.IsFined</td>
+                <td>
+                    @{
+                    TimeSpan daysLeft = burrowRecord.ReturnDate - DateTime.Today;
+                    }
+                    <button class="btn btn-primary" type="button">@daysLeft.Days Days Left</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    td {
+        width: 200px; 
+    }
+    button{
+        width: 160px;
+    }
+
+    .space {
+        height: 45px; 
+    }
+
+    .smallSpace{
+        height: 20px;
+    }
+</style>

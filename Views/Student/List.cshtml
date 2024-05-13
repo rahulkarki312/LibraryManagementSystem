@@ -29,8 +29,9 @@
                 <td>@book.Author</td>
                 <td>@book.PublishDate</td>
                 <td>@book.IsAvailable</td>
+
                 <td>
-                 <a class="btn btn-primary" asp-controller="Admin" asp-action="Edit" asp-route-id="@book.Id" >Edit</a>
+                    <a class="btn btn-primary" asp-controller="Student" asp-action="Burrow" asp-route-bookId="@book.Id">Burrow Book</a>
                 </td>
 
             </tr>

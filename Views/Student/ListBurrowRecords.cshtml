@@ -1,0 +1,79 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+
+
+@model List<LibraryManagementSystem.Models.BurrowRecordViewModel>
+
+<h2>Burrowed Books</h2>
+
+<div class = "smallSpace"></div>
+
+<table class="table">
+    <thead>
+        <tr>
+            
+            <th>Book Title</th>
+            <th>Burrowed Date</th>
+            <th>Return Date</th>
+            <th>Is Fined</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var burrowRecord in Model)
+        {
+            <tr>
+                
+                <td>@burrowRecord.BookTitle</td>
+                <td>@burrowRecord.BurrowDate.ToString("MM/dd/yyyy")</td>
+                <td>@burrowRecord.ReturnDate.ToString("MM/dd/yyyy")</td>
+                <td>@burrowRecord.IsFined</td>
+                <td>
+                    @{
+                        TimeSpan daysLeft = burrowRecord.ReturnDate - DateTime.Today;
+                    }
+
+                    @if (DateTime.Today > burrowRecord.ReturnDate)
+                    {                            
+                            <button class="btn btn-primary" type="submit">Over Due</button>   
+                    }
+                    else
+                    {
+                        <button class="btn btn-primary" type="button">@daysLeft.Days Days Left</button>
+                    }
+                </td>
+
+                <td>
+
+                @{
+                    using (Html.BeginForm("ReturnBook", "Student", FormMethod.Post))
+                    {
+                        <input type="hidden" name="burrowRecordId" value="@burrowRecord.Id" />
+                        <button class="btn btn-primary" type="submit">Return Book</button>
+                    }
+                }
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    td {
+        width: 200px;
+    }
+
+    button{
+        width: 160px;
+    }
+
+    .smallSpace {
+        height: 20px;
+    }
+</style>                           

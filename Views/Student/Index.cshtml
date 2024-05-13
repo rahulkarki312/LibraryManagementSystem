@@ -4,10 +4,13 @@
 @{
 }
 
+
+@model LibraryManagementSystem.Models.UserViewModel
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin Dashboard</title>
+    <title>Student Dashboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -58,22 +61,21 @@
 </head>
 <body>
     <div class="myContainer">
-        <h2>Welcome, Admin !</h2>
-
+        <h2>Welcome, @Model.FirstName @Model.LastName !</h2>
+        
         <div class="mainDiv">
-            <ul class="nav nav-pills flex-column">
-                <li class="nav-item">
-                    <a class="btn btn-primary anchor" href="@Url.Action("List", "Admin")">List Books</a>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-primary anchor" href="@Url.Action("Add", "Admin")">Add Books</a>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-primary anchor" href="@Url.Action("ListBurrowRecords", "Admin")">List Borrow Records</a>
-                </li>
-              
-
-            </ul>
+        <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+                <a class="btn btn-primary anchor" href="@Url.Action("List", "Student")">List Books</a>
+            </li>
+            <li class="nav-item">
+                <a class="btn btn-primary anchor" href="@Url.Action("ListBurrowRecords", "Student")">List Borrow Records</a>
+            </li>
+            <li class="nav-item">
+                <a class="btn btn-primary anchor" href="@Url.Action("ListBurrowRecords", "Student")">Return Book</a>
+            </li>
+           
+        </ul>
 
         </div>
     </div>
@@ -83,20 +85,20 @@
 
 <style>
 
-    h2 {
-        align-self: start;
+    h2{
+        align-self:start;
     }
 
-    .anchor {
+    .anchor{
         width: 200px;
         height: 50px;
     }
 
-    .nav {
+    .nav{
         align-items: start;
     }
 
-    .mainDiv {
+    .mainDiv{
         margin-top: 80px;
         margin-bottom: 80px;
     }
